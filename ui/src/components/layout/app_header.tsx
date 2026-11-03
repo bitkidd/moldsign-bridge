@@ -7,7 +7,7 @@ export function AppHeader() {
         <h1>MoldSign Bridge</h1>
         <p>Your key to government services</p>
       </div>
-      <span className='version'>PREVIEW</span>
+      <span className='version'>ALPHA</span>
     </header>
   );
 }

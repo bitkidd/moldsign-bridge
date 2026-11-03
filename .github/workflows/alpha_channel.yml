@@ -1,0 +1,48 @@
+name: Publish Alpha update channel
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+concurrency:
+  group: alpha-channel
+  cancel-in-progress: false
+jobs:
+  promote:
+    if: startsWith(github.event.release.tag_name, 'v') && contains(github.event.release.tag_name, '-alpha.') && github.event.release.prerelease
+    runs-on: ubuntu-latest
+    steps:
+      - name: Promote validated manifest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -eu
+          gh release download "$RELEASE_TAG" --pattern latest.json --dir "$RUNNER_TEMP/new"
+          if gh release view alpha >/dev/null 2>&1; then
+            gh release download alpha --pattern latest.json --dir "$RUNNER_TEMP/old"
+          fi
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          def version(v):
+              match = re.fullmatch(r'(\d+)\.(\d+)\.(\d+)-alpha\.(\d+)', v)
+              if not match: raise SystemExit('Expected a numbered Alpha version')
+              return tuple(map(int, match.groups()))
+          root = Path(os.environ['RUNNER_TEMP'])
+          new = json.loads((root / 'new/latest.json').read_text())
+          assert 'v' + new['version'] == os.environ['RELEASE_TAG'], 'Tag and manifest differ'
+          version(new['version'])
+          platform = new['platforms']['darwin-aarch64']
+          expected = f"https://github.com/{os.environ['GH_REPO']}/releases/download/{os.environ['RELEASE_TAG']}/"
+          assert platform['url'].startswith(expected), 'Unexpected update URL'
+          assert platform['signature'], 'Missing update signature'
+          old = root / 'old/latest.json'
+          if old.exists() and version(json.loads(old.read_text())['version']) > version(new['version']):
+              raise SystemExit('Refusing to move Alpha channel backwards')
+          PY
+          if ! gh release view alpha >/dev/null 2>&1; then
+            gh release create alpha --prerelease --title 'Alpha update channel' --notes 'Update manifest only. Download installers from the numbered Alpha releases.'
+          fi
+          gh release upload alpha "$RUNNER_TEMP/new/latest.json" --clobber

@@ -28,7 +28,7 @@ export function HomeScreen() {
           onRefresh={bridge.scan}
         />
         <Notice notice={bridge.notice} />
-        <ConnectionDetails driver={driver} service={service} ready={ready} />
+        <ConnectionDetails busy={busy} driver={driver} service={service} ready={ready} />
       </main>
       <AppFooter ready={ready} />
       <LoginDialog

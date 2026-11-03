@@ -18,7 +18,7 @@ SafeNet middleware remains necessary. MoldSign Server, MoldSign libraries, and J
 
 ## First launch
 
-Open **MoldSign Bridge Preview.app**. The app starts the local login service, checks certificate trust, and reads public certificates from the token. No PIN is requested for this initial check.
+Open **MoldSign Bridge Alpha.app**. The app starts the local login service, checks certificate trust, and reads public certificates from the token. No PIN is requested for this initial check.
 
 If the app shows **Set up connection**, choose it and complete the macOS prompt. Setup creates a unique local HTTPS certificate/key pair if one does not already exist, then asks macOS to trust the certificate in your login keychain for the SSL policy and hostname `localhost.cts.md`.
 

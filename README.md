@@ -14,13 +14,13 @@ Open the app, choose your certificate on MPass, and approve the login in a focus
 
 The app communicates directly with the installed **SafeNet Authentication Client** through PKCS#11. It runs without MoldSign libraries, MoldSign Server, or a Java runtime.
 
-> **Preview status:** End-to-end MPass USB-token login was confirmed on November 3, 2026, using an Apple Silicon Mac and a SafeNet ID Prime MD token. Other tokens, government websites, and document-signing workflows have not been validated.
+> **Alpha status:** End-to-end MPass USB-token login was confirmed on November 3, 2026, using an Apple Silicon Mac and a SafeNet ID Prime MD token. Other tokens, government websites, and document-signing workflows have not been validated.
 
 ## Start using it
 
 1. Install SafeNet Authentication Client for macOS and connect your token.
 2. Quit MoldSign Server if it is running; both apps use the same local port.
-3. Open **MoldSign Bridge Preview.app**. Complete **Set up connection** if prompted. This is normally a one-time step on this Mac.
+3. Open **MoldSign Bridge Alpha.app**. Complete **Set up connection** if prompted. This is normally a one-time step on this Mac.
 4. Visit [MPass](https://mpass.gov.md/login), choose USB-token login, and select your certificate.
 5. Enter the token PIN in the app and choose **Approve login**. Continue in your browser.
 
@@ -46,7 +46,7 @@ npm run build
 The bundle is generated at:
 
 ```text
-src-tauri/target/release/bundle/macos/MoldSign Bridge Preview.app
+src-tauri/target/release/bundle/macos/MoldSign Bridge Alpha.app
 ```
 
 ## Inside the app
@@ -105,3 +105,7 @@ This optional development check requires a JDK, Python 3, and macOS OpenSSL/xmll
 - [Troubleshooting](docs/troubleshooting.md) — connection, token, and login failures.
 
 This is a local compatibility project. It is not an official MoldSign, MPass, or SafeNet release. Phosphor’s icon license is retained in `src-tauri/icons/PHOSPHOR-LICENSE.txt`.
+
+## Alpha releases
+
+GitHub Actions builds an Apple Silicon app for each pull request and main push. Tagged Alpha releases use Developer ID signing, notarization, and signed Tauri updates. Release credentials must be configured before distribution. See [the release guide](docs/releases.md).

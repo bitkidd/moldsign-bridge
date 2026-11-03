@@ -30,7 +30,7 @@ Tauri starts Vite on `http://localhost:1420`, then opens the desktop app. `npm r
 | `cargo test --manifest-path src-tauri/Cargo.toml` | Rust protocol and signing tests              |
 | `./scripts/check_xml_signature.sh`                | Independent XML signature and timestamp test |
 
-The app bundle is written to `src-tauri/target/release/bundle/macos/MoldSign Bridge Preview.app`. Build configuration and window limits are in `src-tauri/tauri.conf.json`.
+The app bundle is written to `src-tauri/target/release/bundle/macos/MoldSign Bridge Alpha.app`. Build configuration and window limits are in `src-tauri/tauri.conf.json`.
 
 ## Source map
 

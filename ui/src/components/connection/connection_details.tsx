@@ -1,11 +1,14 @@
 import { CaretRightIcon } from '@phosphor-icons/react';
 
+import { AppUpdates } from '#components/connection/app_updates';
 import type { ServiceStatus } from '#types/bridge';
 export function ConnectionDetails({
   ready,
   driver,
   service,
+  busy,
 }: {
+  busy: boolean;
   ready: boolean;
   driver: boolean;
   service: ServiceStatus | null;
@@ -30,6 +33,7 @@ export function ConnectionDetails({
           <dd>{service?.running ? 'Running' : 'Stopped'}</dd>
         </div>
       </dl>
+      <AppUpdates disabled={busy || Boolean(service?.pending)} />
       <p>Setup is remembered on this Mac. Your PIN is never saved.</p>
     </details>
   );

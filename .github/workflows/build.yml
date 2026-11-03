@@ -1,0 +1,48 @@
+name: Build macOS Alpha
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: dtolnay/rust-toolchain@1.93.0
+        with:
+          targets: aarch64-apple-darwin
+          components: rustfmt
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Use the macOS system XML library
+        run: python3 scripts/configure_macos_xml.py
+      - run: npm ci
+      - run: npm run check
+      - run: cargo fmt --manifest-path src-tauri/Cargo.toml --check
+      - run: cargo test --locked --manifest-path src-tauri/Cargo.toml
+      - run: sh scripts/check_xml_signature.sh
+      - name: Build Apple Silicon app
+        run: npm run build -- --target aarch64-apple-darwin
+        env:
+          APPLE_SIGNING_IDENTITY: '-'
+      - name: Package app and verify system dependencies
+        run: |
+          python3 scripts/check_macos_bundle.py
+          ditto -c -k --sequesterRsrc --keepParent 'src-tauri/target/aarch64-apple-darwin/release/bundle/macos/MoldSign Bridge Alpha.app' '${{ runner.temp }}/MoldSign-Bridge-Alpha-arm64.zip'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MoldSign-Bridge-Alpha-arm64-development
+          path: ${{ runner.temp }}/MoldSign-Bridge-Alpha-arm64.zip
+          if-no-files-found: error

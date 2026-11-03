@@ -34,9 +34,17 @@ pub struct Bridge {
     inner: Mutex<Inner>,
 }
 struct Inner {
+    updating: bool,
     certificates: HashMap<String, Value>,
     pending: Option<Operation>,
     last_message: String,
+}
+fn reserve_update(inner: &mut Inner) -> Result<(), String> {
+    if inner.updating || inner.pending.is_some() {
+        return Err("Finish or cancel the current login before updating.".into());
+    }
+    inner.updating = true;
+    Ok(())
 }
 struct Operation {
     id: String,
@@ -64,10 +72,23 @@ impl Bridge {
             scan_busy: AtomicBool::new(false),
             trust_cache: Mutex::new(None),
             inner: Mutex::new(Inner {
+                updating: false,
                 certificates: HashMap::new(),
                 pending: None,
                 last_message: "Start the login connection when you are ready.".into(),
             }),
+        }
+    }
+    pub fn begin_update(&self) -> Result<(), String> {
+        let mut inner = self
+            .inner
+            .lock()
+            .map_err(|_| "Login service unavailable.")?;
+        reserve_update(&mut inner)
+    }
+    pub fn end_update(&self) {
+        if let Ok(mut inner) = self.inner.lock() {
+            inner.updating = false;
         }
     }
     fn release_attention(&self) {
@@ -465,6 +486,12 @@ async fn sign(
         Ok(i) => i,
         Err(_) => return error(StatusCode::INTERNAL_SERVER_ERROR, "Service unavailable"),
     };
+    if inner.updating {
+        return error(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "App update in progress; try again shortly",
+        );
+    }
     if inner
         .pending
         .as_ref()
@@ -753,6 +780,47 @@ mod http2_tests {
                 .unwrap();
             let response = router.oneshot(req).await.unwrap();
             assert_eq!(response.status(), expected);
+        }
+    }
+}
+
+#[cfg(test)]
+mod update_tests {
+    use super::*;
+
+    fn idle() -> Inner {
+        Inner {
+            updating: false,
+            certificates: HashMap::new(),
+            pending: None,
+            last_message: String::new(),
+        }
+    }
+    #[test]
+    fn update_reservation_is_exclusive_and_releasable() {
+        let mut inner = idle();
+        assert!(reserve_update(&mut inner).is_ok());
+        assert!(inner.updating);
+        assert!(reserve_update(&mut inner).is_err());
+        inner.updating = false;
+        assert!(reserve_update(&mut inner).is_ok());
+    }
+    #[test]
+    fn pending_and_signing_logins_block_updates() {
+        for signing in [false, true] {
+            let mut inner = idle();
+            inner.pending = Some(Operation {
+                id: "test".into(),
+                created: Instant::now(),
+                certificate: Value::Null,
+                challenge: vec![],
+                signing,
+                result: None,
+            });
+            assert!(reserve_update(&mut inner).is_err());
+            assert!(!inner.updating);
+            inner.pending = None;
+            assert!(reserve_update(&mut inner).is_ok());
         }
     }
 }

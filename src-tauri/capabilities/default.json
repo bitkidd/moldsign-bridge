@@ -1,6 +1,6 @@
 {
   "identifier": "main",
-  "description": "Local preview window only",
+  "description": "Local Alpha window only",
   "windows": ["main"],
   "permissions": ["core:default"]
 }

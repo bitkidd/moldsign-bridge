@@ -28,7 +28,7 @@ Origin: https://mpass.gov.md
 
 The response is a JSON object with a `certificateModel` array. Each model includes `certificateId`, `providerId`, `label`, `certificateName`, `certificateBase64`, `subjectDN`, `issuerDN`, `privateKeyPresent`, and `pinFinalTry`.
 
-The ID is the certificate’s SHA-256 fingerprint. The provider ID is `PKCS11`. DER bytes and names originate from the local token. The display-oriented DN fields contain the names used by this preview, not full general-purpose directory-name serialization.
+The ID is the certificate’s SHA-256 fingerprint. The provider ID is `PKCS11`. DER bytes and names originate from the local token. The display-oriented DN fields contain the names used by this alpha, not full general-purpose directory-name serialization.
 
 Only time-valid certificates from tokens that do not report a locked PIN are listed. The bridge cannot prove that a corresponding private key is accessible before token login: key matching is confirmed during signing. This endpoint is a limited compatibility implementation, not a general certificate-validation or revocation service.
 

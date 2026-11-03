@@ -2,6 +2,7 @@
 mod bridge;
 mod connection_migration;
 mod token_sign;
+mod updates;
 mod xades;
 use base64::Engine;
 use serde::Serialize;
@@ -190,8 +191,12 @@ fn main() {
     }
     let _ = rustls::crypto::aws_lc_rs::default_provider().install_default();
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .manage(updates::UpdateState::default())
         .setup(bridge::initialize)
         .invoke_handler(tauri::generate_handler![
+            updates::check_update,
+            updates::install_update,
             inspect,
             probe,
             bridge::service_status,
@@ -202,5 +207,5 @@ fn main() {
             bridge::open_mpass
         ])
         .run(tauri::generate_context!())
-        .expect("Unable to launch MoldSign Bridge Preview");
+        .expect("Unable to launch MoldSign Bridge Alpha");
 }

@@ -1,1 +1,1 @@
-{"main":{"identifier":"main","description":"Local preview window only","local":true,"windows":["main"],"permissions":["core:default"]}}
+{"main":{"identifier":"main","description":"Local Alpha window only","local":true,"windows":["main"],"permissions":["core:default"]}}

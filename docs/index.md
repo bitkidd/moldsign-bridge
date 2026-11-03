@@ -11,6 +11,8 @@ MoldSign Bridge connects MPass in your browser to a SafeNet token through a loca
 | [Development](development.md)         | Build commands, source map, imports, formatting, and tests         |
 | [Troubleshooting](troubleshooting.md) | Diagnose connection failures and authentication errors             |
 
+[Alpha releases and updates](releases.md) covers GitHub builds, Apple notarization, signing secrets, and the update channel.
+
 ## Confirmed scope
 
 The user confirmed a successful end-to-end MPass USB-token login on **November 3, 2026**, on an Apple Silicon Mac with a SafeNet ID Prime MD token. Local certificate discovery, PIN approval, signature creation, and MPass acceptance worked together in that environment.
