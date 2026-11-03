@@ -1,0 +1,48 @@
+{
+  "name": "moldsign-bridge-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#app": "./ui/src/app.tsx",
+    "#components/*": "./ui/src/components/*.tsx",
+    "#forms/*": "./ui/src/components/forms/*.tsx",
+    "#hooks/*": "./ui/src/hooks/*.ts",
+    "#lib/*": "./ui/src/lib/*.ts",
+    "#screens/*": "./ui/src/screens/*.tsx",
+    "#types/*": "./ui/src/types/*.ts",
+    "#ui/*": "./ui/src/components/ui/*.tsx",
+    "#styles.css": "./ui/src/style.css"
+  },
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build --bundles app",
+    "dev:web": "vite",
+    "build:web": "npm run typecheck && vite build",
+    "icons": "node scripts/generate_icons.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint --deny-warnings ui/src vite.config.ts scripts/generate_icons.mjs",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "@tauri-apps/api": "^2.12.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "oxfmt": "^0.76.0",
+    "oxlint": "^1.90.0",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

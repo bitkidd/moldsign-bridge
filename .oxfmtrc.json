@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "sortImports": true,
+  "printWidth": 100,
+  "ignorePatterns": [
+    "node_modules/**",
+    "dist/**",
+    "src-tauri/target/**",
+    "src-tauri/icons/**",
+    "ui/public/key.svg",
+    "package-lock.json",
+    "src-tauri/gen/**"
+  ]
+}

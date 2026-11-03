@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "react-hooks", "jsx-a11y", "import"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "typescript/no-explicit-any": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "jsx-a11y/no-autofocus": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["./*", "../*"],
+            "message": "Use the package.json # import mappings for internal modules."
+          }
+        ]
+      }
+    ]
+  },
+  "ignorePatterns": ["node_modules/**", "dist/**", "src-tauri/target/**"]
+}

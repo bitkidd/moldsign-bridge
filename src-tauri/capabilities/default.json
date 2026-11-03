@@ -1,0 +1,6 @@
+{
+  "identifier": "main",
+  "description": "Local preview window only",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}
