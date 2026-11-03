@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod bridge;
+mod connection_migration;
 mod token_sign;
 mod xades;
 use base64::Engine;

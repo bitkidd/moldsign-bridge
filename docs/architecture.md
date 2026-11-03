@@ -77,3 +77,5 @@ MPass’s response is the final authentication result. Local signature creation 
 Only the local HTTPS certificate/key pair is intentionally persisted by the connection flow. Certificate models, pending challenges, PIN input, and signature results are handled in memory or worker pipes. OS memory, crash handling, and vendor middleware are separate from this app’s guarantees; see [Security](security.md).
 
 [Documentation index](index.md)
+
+The app identifier is `dev.basicshapes.moldsign-bridge`. Startup migrates a complete legacy local HTTPS identity into the new app-data location using a restricted staging directory and atomic rename. Existing destination directories are never replaced. The legacy identity remains available for rollback.

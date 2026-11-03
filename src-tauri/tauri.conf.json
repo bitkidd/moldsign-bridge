@@ -2,7 +2,7 @@
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "MoldSign Bridge Preview",
   "version": "0.1.0",
-  "identifier": "dev.local.moldsignbridge.preview",
+  "identifier": "dev.basicshapes.moldsign-bridge",
   "build": {
     "frontendDist": "../dist",
     "beforeDevCommand": "npm run dev:web",

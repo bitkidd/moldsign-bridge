@@ -633,7 +633,12 @@ pub async fn approve_login(
     Ok(())
 }
 pub fn initialize(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
-    let directory = app.path().app_data_dir()?.join("connection");
+    let app_data = app.path().app_data_dir()?;
+    let directory = app_data.join("connection");
+    if let Some(parent) = app_data.parent() {
+        let previous = parent.join("dev.local.moldsignbridge.preview/connection");
+        crate::connection_migration::migrate_connection(&previous, &directory)?;
+    }
     app.manage(Arc::new(Bridge::new(directory, app.handle().clone())));
     Ok(())
 }

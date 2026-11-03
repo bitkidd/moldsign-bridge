@@ -53,6 +53,7 @@ ui/src/
 src-tauri/src/
   main.rs                         App entry, driver discovery, probe worker
   bridge.rs                       Local HTTPS and approval lifecycle
+  connection_migration.rs         Legacy local HTTPS identity migration
   token_sign.rs                   PKCS#11 signer and mechanism selection
   xades.rs                        XML envelope and timestamp handling
 scripts/

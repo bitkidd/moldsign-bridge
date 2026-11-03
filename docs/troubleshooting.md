@@ -31,8 +31,8 @@ The bridge does not change system services or kill other applications to claim t
 The connection uses:
 
 ```text
-~/Library/Application Support/dev.local.moldsignbridge.preview/connection/localhost.pem
-~/Library/Application Support/dev.local.moldsignbridge.preview/connection/localhost-key.pem
+~/Library/Application Support/dev.basicshapes.moldsign-bridge/connection/localhost.pem
+~/Library/Application Support/dev.basicshapes.moldsign-bridge/connection/localhost-key.pem
 ```
 
 Both files should remain together. Trust is checked again on each launch and cached briefly during use. Setup normally persists; it is not intended to run before every login.

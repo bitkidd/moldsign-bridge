@@ -27,10 +27,12 @@ The certificate and key are reused on later launches. Trust is checked on startu
 Local connection files live at:
 
 ```text
-~/Library/Application Support/dev.local.moldsignbridge.preview/connection/
+~/Library/Application Support/dev.basicshapes.moldsign-bridge/connection/
   localhost.pem
   localhost-key.pem
 ```
+
+On the first launch under the new identifier, a complete connection pair from the previous `dev.local.moldsignbridge.preview` app-data folder is copied automatically, provided the new connection folder does not already exist. The old pair is retained. This preserves the certificate fingerprint and its existing keychain trust.
 
 Do not share `localhost-key.pem`. Do not bypass a browser certificate warning; use the app’s setup flow instead.
 
